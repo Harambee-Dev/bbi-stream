@@ -8,7 +8,7 @@ const T = new Twit({
     strictSSL:            true,     // optional - requires SSL certificates to be valid.
 })
 module.exports = function listen(cb) {
-    const stream = T.stream('statuses/filter', { track: ['#BBIReport', '#BBI', '#RejectBBI', '#BBINonsense'] })
+    const stream = T.stream('statuses/filter', { track: ['#BBIReport', '#BBI', '#RejectBBI', '#BBINonsense'], lang: 'en', locale: 'en'  })
     stream.on('limit', function (limitMessage) {
         console.log(limitMessage)
     })
