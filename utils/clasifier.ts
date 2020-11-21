@@ -1,6 +1,7 @@
-const natural = require('natural');
-const Sentiment = require('sentiment');
-
+import natural from 'natural';
+import Sentiment from 'sentiment';
+import data from '../data/tweets'
+import { Data } from './types';
 const sentiment = new Sentiment();
 const classifier = new natural.BayesClassifier();
 classifier.addDocument(['president','secretary', 'minister', 'ombudsman', 'senate', 'nominate', 'parliament', 'county', 'position', 'judiciary' ], 'positions');
@@ -10,9 +11,23 @@ classifier.addDocument(['people', 'kenyan', 'youth', 'vijana', 'women', 'elder',
 classifier.addDocument(['resource', 'national', 'tax', 'taxes', 'economy', 'helb', 'tax break', 'unemployment', 'employment', 'job', 'revenue', 'employ', 'kazi', 'wealth', 'loan', 'wheelbarrow'], 'economy');
 classifier.train();
 
+function test(){
+    let overallSentimentScore = 0
+    const tweets = (data as Data).statuses
+    for (const tweet of tweets) {
+        const sentiment = getSentiment(tweet.text)
+        overallSentimentScore += sentiment.sentimentAnalysis.score
+        console.log(`${tweet.text.trim().replace('\n', '')}
+\t sentiment: ${sentiment.sentimentAnalysis.score}
+\t classification: ${sentiment.classification.map(cls => `${cls.label}`).join(', ')}
+\n`);
+    }
+    console.log(`Overall Score: ${overallSentimentScore} from ${tweets.length} tweets`);
+}
 
-module.exports = function (text) {
+function getSentiment(text: string) {
     const sentimentAnalysis = sentiment.analyze(text);
     const classification = classifier.getClassifications(text)
     return { sentimentAnalysis, classification}
 }
+test()
