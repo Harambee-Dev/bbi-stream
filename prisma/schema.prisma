@@ -24,11 +24,11 @@ model Sentiment {
 }
 model Tweet {
   id Int  @unique
-  source String
+  source String?
   text String
   user User
   entities String[]
-  impact Int
-  sentiment Sentiment
-  classification String
+  impact Int?
+  sentiment Sentiment?
+  classification String?
 }  

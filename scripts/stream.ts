@@ -39,7 +39,6 @@ export function stream() {
         },
         text: tweet.text,
         id: tweet.id,
-        
       }
     })
     console.log(JSON.stringify(tweet));
